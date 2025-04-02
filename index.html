@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Safe Browsing Scanner</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+
+        .container {
+            background-color: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .header h1 {
+            color: #1a73e8;
+            margin-bottom: 10px;
+        }
+
+        .description {
+            text-align: center;
+            margin-bottom: 30px;
+            color: #666;
+            line-height: 1.6;
+        }
+
+        .checker-box {
+            text-align: center;
+        }
+
+        #url-input {
+            width: 80%;
+            padding: 12px;
+            margin-bottom: 20px;
+            border: 2px solid #ddd;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+
+        #check-button {
+            background-color: #1a73e8;
+            color: white;
+            padding: 12px 30px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s;
+        }
+
+        #check-button:hover {
+            background-color: #1557b0;
+        }
+
+        .result {
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 5px;
+            display: none;
+        }
+
+        .safe {
+            background-color: #e6f4ea;
+            color: #137333;
+        }
+
+        .unsafe {
+            background-color: #fce8e6;
+            color: #c5221f;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Safe Browsing Scanner</h1>
+            <p>URL / Link Checker</p>
+        </div>
+        
+        <div class="description">
+            <p>Check if a link is safe to open with Link Checker. Avoid malicious 
+            websites and getting scammed online with a free link safety check.</p>
+        </div>
+
+        <div class="checker-box">
+            <input type="url" id="url-input" placeholder="Copy and paste the link here">
+            <br>
+            <button id="check-button">Check link safety</button>
+            <div id="result" class="result"></div>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('check-button').addEventListener('click', function() {
+            const urlInput = document.getElementById('url-input');
+            const resultDiv = document.getElementById('result');
+            const url = urlInput.value.trim();
+
+            if (!url) {
+                alert('Please enter a URL');
+                return;
+            }
+
+            // Simulate safety check (replace with actual API call)
+            const isSafe = performSafetyCheck(url);
+
+            resultDiv.style.display = 'block';
+            if (isSafe === 'safe') {
+                resultDiv.className = 'result safe';
+                resultDiv.textContent = '✓ This link appears to be safe';
+            } else if (isSafe === 'unsafe') {
+                resultDiv.className = 'result unsafe';
+                resultDiv.textContent = '⚠️ Warning: This link appears to be unsafe';
+            } else {
+                resultDiv.className = 'result unsafe';
+                resultDiv.textContent = 'Invalid URL format';
+            }
+        });
+
+        // Mock safety check function
+        function performSafetyCheck(url) {
+            // In real implementation, this would call an API like:
+            // Google Safe Browsing API or VirusTotal API
+            const maliciousPatterns = ['phishing', 'malware', 'scam'];
+            const isValidUrl = isValidURL(url);
+
+            if (!isValidUrl) return 'invalid';
+            
+            return maliciousPatterns.some(pattern => url.includes(pattern)) 
+                ? 'unsafe' 
+                : 'safe';
+        }
+
+        function isValidURL(string) {
+            try {
+                new URL(string);
+                return true;
+            } catch (_) {
+                return false;
+            }
+        }
+    </script>
+</body>
+</html>
